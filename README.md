@@ -1,6 +1,7 @@
-#noble.Secret 
+noble.Secret 
+-----------
 
-###Simple string wrapper type for secret storage in config files.
+### Simple string wrapper type for secret storage in config files.
 
 One type with support registration extensions (like a sql driver).
 Build-in supported storage type prefixes:
@@ -8,7 +9,7 @@ Build-in supported storage type prefixes:
 * raw - just string (for debug/developing) 
 * env - read parameter from environment variable (see examples). read once on read from yaml/json
 * dynenv - read parameter from environment variable without caching (every time when you call .Get())
-####YAML config example:
+#### YAML config example:
 ```yaml
 db:
   name: "sample"
@@ -21,13 +22,13 @@ db:
 pass2: "dynenv:DB_PASS"
 ```
 
-####Configure environment example:
+#### Configure environment example:
 ```bash
 export DB_PASS=SomeStrongPassword
 ```
  
 
-####Usage example:
+#### Usage example:
 ```go
 package main
 import (
@@ -61,11 +62,11 @@ func main(){
 }
 
 ```
-###Extension "simplecrypt"
+### Extension "simplecrypt"
 
 Add type extension:
 * scr - simple crypt value
-#####Yaml config example:
+##### Yaml config example:
 ````yaml
 secret: scr:1Y2qKTtkeg5SmboJ970qENd54oBepinL5SF4dujQkY5Ec/J7M3bWQfiWaEPsZaXl4bPAEKoC1i29
 ````
