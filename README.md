@@ -1,4 +1,4 @@
-noble.Secret 
+# noble.Secret 
 -----------
 
 ### Simple string wrapper type for secret storage in config files.
@@ -9,7 +9,9 @@ Build-in supported storage type prefixes:
 * raw - just string (for debug/developing) 
 * env - read parameter from environment variable (see examples). read once on read from yaml/json
 * dynenv - read parameter from environment variable without caching (every time when you call .Get())
+
 #### YAML config example:
+
 ```yaml
 db:
   name: "sample"
