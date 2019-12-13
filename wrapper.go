@@ -140,3 +140,32 @@ func (d *dynReader) Read(path string) (string, error) {
 func (d dynReader) Interface() SecretStorage {
 	return &dynReader{}
 }
+
+type requiredSecretRule struct {
+	message string
+	skipNil bool
+}
+
+var RequiredSecret = &requiredSecretRule{message: "cannot be blank", skipNil: false}
+
+func (rd requiredSecretRule) Validate(value interface{}) error {
+	s, ok := value.(Secret)
+	if !ok {
+		return errors.New("invalid type")
+	}
+	s.Get()
+	return s.InternalError()
+}
+
+func (rd *requiredSecretRule) Error(message string) *requiredSecretRule {
+	msg := rd.message
+	if msg == "" {
+		msg = message
+	} else {
+		msg += ": " + message
+	}
+	return &requiredSecretRule{
+		message: msg,
+		skipNil: rd.skipNil,
+	}
+}
