@@ -20,9 +20,10 @@ var registered = map[string]SecretStorage{
 
 // Secret object
 type Secret struct {
-	reader   SecretStorage
-	path     string
-	internal error
+	reader     SecretStorage
+	path       string
+	parseError error
+	internal   error
 }
 
 func (sw Secret) Error() string {
@@ -37,6 +38,11 @@ func (sw Secret) InternalError() error {
 	return sw.internal
 }
 
+// InternalError returns error
+func (sw Secret) ParseError() error {
+	return sw.parseError
+}
+
 // Register new SecretStorage reader interface
 func Register(key string, impl SecretStorage) {
 	registered[key] = impl
@@ -49,7 +55,8 @@ func (sw *Secret) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	if err := unmarshal(&s); err != nil {
 		return err
 	}
-	return sw.read(s)
+	sw.parseError = sw.read(s)
+	return nil
 }
 
 // UnmarshalJSON read secrets from json
@@ -58,7 +65,8 @@ func (sw *Secret) UnmarshalJSON(data []byte) error {
 	if e := json.Unmarshal(data, &s); e != nil {
 		return e
 	}
-	return sw.read(s)
+	sw.parseError = sw.read(s)
+	return nil
 }
 
 func (sw *Secret) read(s string) error {
@@ -152,6 +160,9 @@ func (rd requiredSecretRule) Validate(value interface{}) error {
 	s, ok := value.(Secret)
 	if !ok {
 		return errors.New("invalid type")
+	}
+	if s.ParseError() != nil {
+		return s.ParseError()
 	}
 	s.Get()
 	return s.InternalError()
