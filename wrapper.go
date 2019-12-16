@@ -72,15 +72,15 @@ func (sw *Secret) UnmarshalJSON(data []byte) error {
 func (sw *Secret) read(s string) error {
 	parts := strings.SplitN(s, ":", 2)
 	if len(parts) != 2 {
-		sw.internal = errors.New("incorrect format. use <storage>:<path/name>")
-		return sw.internal
+		sw.parseError = errors.New("incorrect format. use <storage>:<path/name>")
+		return sw.parseError
 	}
 	key := parts[0]
 	sw.path = parts[1]
 	var ok bool
 	if sw.reader, ok = registered[key]; !ok {
-		sw.internal = errors.New("unregistered storage: " + key)
-		return sw.internal
+		sw.parseError = errors.New("unregistered storage: " + key)
+		return sw.parseError
 	}
 	_, sw.internal = sw.reader.Read(sw.path)
 	return sw.internal
@@ -95,6 +95,9 @@ func (sw Secret) New(s string) Secret {
 
 // Get value getter
 func (sw *Secret) Get() string {
+	if sw.reader == nil {
+		return ""
+	}
 	val, err := sw.reader.Read(sw.path)
 	sw.internal = err
 	return val
@@ -163,6 +166,9 @@ func (rd requiredSecretRule) Validate(value interface{}) error {
 	}
 	if s.ParseError() != nil {
 		return s.ParseError()
+	}
+	if s.reader == nil {
+		return errors.New("invalid value format. use <storage type>:<path/name/value...(depend on storage type)>")
 	}
 	s.Get()
 	return s.InternalError()
