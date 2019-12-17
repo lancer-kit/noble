@@ -108,3 +108,35 @@ OPTIONS:
    --key value, -k value    key to encrypt value. [$SCR_PASS]
    --key value, -k value    key to encrypt value. [$SCR_PASS]
 ````
+##### Usage:
+
+>Just import package
+
+````go
+package main
+import _ "github.com/lancer-kit/noble/simplecrypt"
+//....
+````
+
+
+### Extension "files"
+
+Add type extension:
+* file - read first line from text file as secret value
+
+##### Yaml config example:
+
+````yaml
+secret: "file:/etc/noble/secret.cfg"
+````
+
+##### Usage:
+
+>Just import package
+
+
+````go
+package main
+import _ "github.com/lancer-kit/noble/files"
+//....
+````
