@@ -71,7 +71,8 @@ func (sw *Secret) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText from text formats
 func (sw *Secret) UnmarshalText(text []byte) error {
-	panic("implement me")
+	sw.parseError = sw.read(string(text))
+	return nil
 }
 
 func (sw *Secret) read(s string) error {
@@ -82,11 +83,14 @@ func (sw *Secret) read(s string) error {
 	}
 	key := parts[0]
 	sw.path = parts[1]
-	if reader, ok := registered[key]; !ok {
-		sw.reader = reader.Clone()
+
+	reader, ok := registered[key]
+	if !ok {
 		sw.parseError = errors.New("unregistered storage: " + key)
 		return sw.parseError
 	}
+
+	sw.reader = reader.Clone()
 	_, sw.internal = sw.reader.Read(sw.path)
 	return sw.internal
 }
