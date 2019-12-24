@@ -59,7 +59,7 @@ func TestUnmarshalYAML(t *testing.T) {
 	var r Reader
 	os.Setenv(EnvVarName, testKey)
 	r.SetKey(testKey)
-	noble.Register("scr", r.Interface())
+	noble.Register("scr", r.Clone())
 	e := yaml.Unmarshal([]byte(testYaml), &x)
 	assert.NoError(t, e)
 	v := x.Secret.Get()
@@ -72,7 +72,7 @@ func TestUnmarshalJSON(t *testing.T) {
 	var r Reader
 	os.Setenv(EnvVarName, testKey)
 	r.SetKey(testKey)
-	noble.Register("scr", r.Interface())
+	noble.Register("scr", r.Clone())
 	e := json.Unmarshal([]byte(testJSON), &x)
 	assert.NoError(t, e)
 	x.Secret.Get()

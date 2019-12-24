@@ -9,10 +9,10 @@ import (
 )
 
 func init() {
-	noble.Register("file", Reader{}.Interface())
+	noble.Register("file", &Reader{})
 }
 
-//Reader object. Read data from file
+// Reader object. Read data from file
 type Reader struct {
 	fileName string
 }
@@ -24,14 +24,17 @@ func (r *Reader) Read(fileName string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	rdr := bufio.NewReader(f)
 	res, err := rdr.ReadString([]byte("\n")[0])
 	if err != nil {
 		return "", err
 	}
+
 	return strings.Replace(res, "\n", "", -1), nil
 }
 
-func (r Reader) Interface() noble.SecretStorage {
+// Clone returns new empty instance of Reader
+func (r Reader) Clone() noble.SecretStorage {
 	return &Reader{}
 }

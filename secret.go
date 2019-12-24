@@ -3,19 +3,19 @@ package noble
 import (
 	"encoding/json"
 	"errors"
-	"os"
 	"strings"
 )
 
 // SecretStorage reader interface
 type SecretStorage interface {
+	Clone() SecretStorage
 	Read(path string) (string, error)
 }
 
 var registered = map[string]SecretStorage{
-	"raw":    rawReader{}.Interface(),
-	"env":    envReader{}.Interface(),
-	"dynenv": dynReader{}.Interface(),
+	"raw":    &rawReader{},
+	"env":    &envReader{},
+	"dynenv": &dynReader{},
 }
 
 // Secret object
@@ -69,6 +69,11 @@ func (sw *Secret) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnmarshalText from text formats
+func (sw *Secret) UnmarshalText(text []byte) error {
+	panic("implement me")
+}
+
 func (sw *Secret) read(s string) error {
 	parts := strings.SplitN(s, ":", 2)
 	if len(parts) != 2 {
@@ -77,8 +82,8 @@ func (sw *Secret) read(s string) error {
 	}
 	key := parts[0]
 	sw.path = parts[1]
-	var ok bool
-	if sw.reader, ok = registered[key]; !ok {
+	if reader, ok := registered[key]; !ok {
+		sw.reader = reader.Clone()
 		sw.parseError = errors.New("unregistered storage: " + key)
 		return sw.parseError
 	}
@@ -103,61 +108,15 @@ func (sw *Secret) Get() string {
 	return val
 }
 
-type rawReader struct{}
-
-func (rr rawReader) Read(path string) (string, error) {
-	return path, nil
-}
-
-func (rr rawReader) Interface() SecretStorage {
-	return &rawReader{}
-}
-
-// Read parameter value from environment variable and store into "cache"
-type envReader struct {
-	cached string
-}
-
-//Read env.variable into internal cache
-func (er *envReader) Read(path string) (string, error) {
-	if er.cached == "" {
-		er.cached = os.Getenv(path)
-	}
-	if er.cached == "" {
-		return er.cached, errors.New("unable to read OS environment variable:" + path)
-	}
-	return er.cached, nil
-}
-
-// Interface constructor for envReader
-func (er envReader) Interface() SecretStorage {
-	return &envReader{}
-}
-
-// Read parameter value from environment variable dynamically
-type dynReader struct {
-}
-
-//Read env.variable dynamically
-func (d *dynReader) Read(path string) (string, error) {
-	val := os.Getenv(path)
-	if val == "" {
-		return val, errors.New("unable to read OS environment variable:" + path)
-	}
-	return val, nil
-}
-
-// Interface constructor for dynReader
-func (d dynReader) Interface() SecretStorage {
-	return &dynReader{}
-}
-
 type requiredSecretRule struct {
 	message string
 	skipNil bool
 }
 
 var RequiredSecret = &requiredSecretRule{message: "cannot be blank", skipNil: false}
+
+// ToDo
+// var OptionalSecret = &requiredSecretRule{message: "cannot be blank", skipNil: true}
 
 func (rd requiredSecretRule) Validate(value interface{}) error {
 	s, ok := value.(Secret)

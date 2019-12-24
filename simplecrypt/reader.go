@@ -59,7 +59,7 @@ type Reader struct {
 
 func init() {
 	r := Reader{}
-	noble.Register("scr", r.SetKey(os.Getenv(EnvVarName)).Interface())
+	noble.Register("scr", r.SetKey(os.Getenv(EnvVarName)).Clone())
 }
 
 // Read implementation
@@ -73,6 +73,7 @@ func (scr *Reader) SetKey(new string) *Reader {
 		scr.key = defaultKeyBin
 		return scr
 	}
+
 	var err error
 	if scr.key, err = base64.RawStdEncoding.DecodeString(new); err != nil {
 		panic(err)
@@ -80,7 +81,10 @@ func (scr *Reader) SetKey(new string) *Reader {
 	return scr
 }
 
-// Interface constructor
-func (scr *Reader) Interface() noble.SecretStorage {
-	return scr
+// Clone returns new empty instance of Reader
+func (scr *Reader) Clone() noble.SecretStorage {
+	r := &Reader{}
+	r.key = scr.key
+
+	return r
 }
