@@ -9,7 +9,6 @@ Build-in supported storage type prefixes:
 * raw - just string (for debug/developing) 
 * env - read parameter from environment variable (see examples). read once on read from yaml/json
 * dynenv - read parameter from environment variable without caching (every time when you call .Get())
-
 #### YAML config example:
 
 ```yaml
@@ -119,6 +118,36 @@ import _ "github.com/lancer-kit/noble/simplecrypt"
 ````
 
 
+### Extension for etcd key/value API v2, "etcdr2"
+
+Add type extension:
+* etcd2 - read value from selected key stored on ETCD by API v2
+
+##### Yaml config example:
+
+````yaml
+secret: "etcd2:messages4/test"
+secret2: "etcd2:test2"
+secret3: "etcd2:messages4/keybox/test"
+````
+
+Store value example:
+````bash
+curl http://127.0.0.1:2379/v2/keys/messages4/test -XPUT -d value="Hello world"
+curl http://127.0.0.1:2379/v2/keys/test2 -XPUT -d value="Some very secret value"
+curl http://127.0.0.1:2379/v2/keys/messages4/keybox/test -XPUT -d value="One more secret value"
+````
+##### Usage:
+
+> Just import package
+>
+> Extension will be registered automatically
+
+````go
+package main
+import _ "github.com/lancer-kit/noble/etcdr2"
+//....
+````
 ### Extension "files"
 
 Add type extension:
