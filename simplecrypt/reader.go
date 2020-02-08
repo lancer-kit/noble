@@ -41,7 +41,12 @@ func Decrypt(in string, symKey []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	text, err := base64.RawStdEncoding.DecodeString(in)
+	if err != nil {
+		return "", err
+	}
+
 	if len(text) < aes.BlockSize {
 		return "", errors.New("ciphertext too short")
 	}
