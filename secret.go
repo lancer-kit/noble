@@ -12,6 +12,7 @@ type SecretStorage interface {
 	Read(path string) (string, error)
 }
 
+//nolint:gochecknoglobals
 var registered = map[string]SecretStorage{
 	"raw":    &rawReader{},
 	"env":    &envReader{},
@@ -38,7 +39,7 @@ func (sw Secret) InternalError() error {
 	return sw.internal
 }
 
-// InternalError returns error
+// ParseError returns error
 func (sw Secret) ParseError() error {
 	return sw.parseError
 }
@@ -117,6 +118,8 @@ type requiredSecretRule struct {
 	skipNil bool
 }
 
+// RequiredSecret validation rule
+//nolint:gochecknoglobals
 var RequiredSecret = &requiredSecretRule{message: "cannot be blank", skipNil: false}
 
 // ToDo

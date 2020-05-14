@@ -27,7 +27,7 @@ pass2: "dynenv:DB_PASS"
 ```bash
 export DB_PASS=SomeStrongPassword
 ```
- 
+
 
 #### Usage example:
 ```go
@@ -169,3 +169,59 @@ package main
 import _ "github.com/lancer-kit/noble/files"
 //....
 ````
+
+### Extension "vaultx"
+
+Add type extension:
+* vault - read key from secure storage (hashicorp vault)
+Key format:
+
+`/<path>?<key>`
+
+For example, stored by command:
+```ssh
+vault kv put secret/data/some-secured pass="my long password"    
+```
+can be read by:
+
+```yaml
+password: "vault:/data/some-secured?pass"
+```
+
+##### Yaml config example:
+
+````yaml
+secret: "vault:/data?key"
+````
+
+##### Usage:
+
+>Just import package
+
+
+````go
+package main
+import (
+
+"github.com/lancer-kit/noble/vaultx"
+"log"
+)
+//....
+func loadConfig(){
+  vaultx.SetServerAddress("https://vault.server.lan:2345")
+  if !vaultx.SetTokenEnv("VAULT_TOKEN"){
+        log.Fatal("environment var VAULT_TOKEN not set")
+  }
+  if err := vaultx.InitVault(nil);err!=nil{
+    log.Fatal(err)
+  }  
+  //... then load config file  
+}
+````
+
+It is also possible to configure the following parameters:
+* `vaultx.SetLogger(logEntry)`: set logrus entry as log source;
+* `vaultx.SetServerAddress(address)`: set vault server address;
+* `vaultx.SetSecretPath(path)`: set vault k/v path. Used secret/data by default;
+* `vaultx.SetToken(token)`: set vault token to login
+* `vaultx.SetTokenEnv(envVarName)`: set vault token to login from environment var
