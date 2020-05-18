@@ -88,6 +88,10 @@ func (v *vaultStorage) Get(path, key string) (string, error) {
 
 	value, ok := data[key]
 
+	if !ok {
+		return "", nil
+	}
+
 	//convert interface to string
 	res := ""
 	switch typedValue := value.(type) {

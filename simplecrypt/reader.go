@@ -12,10 +12,12 @@ import (
 	"github.com/lancer-kit/noble"
 )
 
+//EnvVarName default password variable name
 const EnvVarName = "SCR_PASS"
 
-var defaultKeyBin = []byte{9, 190, 70, 76, 8, 173, 169, 87, 168, 51, 8, 167, 66, 188, 73, 189, 90, 66, 153, 50, 2, 185, 72, 66, 168, 68, 71, 175, 168, 189, 52, 187}
-var defaultKey = base64.RawStdEncoding.EncodeToString(defaultKeyBin)
+//nolint:gochecknoglobals
+var defaultKeyBin = []byte{9, 190, 70, 76, 8, 173, 169, 87, 168, 51, 8, 167, 66, 188, 73, 189, 90, 66, 153, 50, 2, 185,
+	72, 66, 168, 68, 71, 175, 168, 189, 52, 187}
 
 // Encrypt string by symmetrical key
 func Encrypt(in string, symKey []byte) (string, error) {
@@ -30,7 +32,7 @@ func Encrypt(in string, symKey []byte) (string, error) {
 		return "", err
 	}
 	cfb := cipher.NewCFBEncrypter(block, iv)
-	cfb.XORKeyStream(cipherText[aes.BlockSize:], []byte(b))
+	cfb.XORKeyStream(cipherText[aes.BlockSize:], b)
 
 	return base64.RawStdEncoding.EncodeToString(cipherText), nil
 }
@@ -62,6 +64,7 @@ type Reader struct {
 	key []byte
 }
 
+//nolint:gochecknoinits
 func init() {
 	r := Reader{}
 	noble.Register("scr", r.SetKey(os.Getenv(EnvVarName)).Clone())

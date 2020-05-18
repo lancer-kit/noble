@@ -42,6 +42,7 @@ func TestReader_Read(t *testing.T) {
 	assert.Equal(t, testValue, rs)
 	r.SetKey(testKey)
 	rs, e = r.Read(es)
+	assert.NoError(t, e)
 	assert.Condition(t, func() (success bool) {
 		return rs != testValue
 
@@ -57,7 +58,9 @@ func TestReader_Read(t *testing.T) {
 func TestUnmarshalYAML(t *testing.T) {
 	var x testCfg
 	var r Reader
-	os.Setenv(EnvVarName, testKey)
+	if e := os.Setenv(EnvVarName, testKey); e != nil {
+		assert.Fail(t, "unable to set env.var")
+	}
 	r.SetKey(testKey)
 	noble.Register("scr", r.Clone())
 	e := yaml.Unmarshal([]byte(testYaml), &x)
