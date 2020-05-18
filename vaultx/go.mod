@@ -1,4 +1,4 @@
-module github.com/lancer-kit/noble/nvault
+module github.com/lancer-kit/noble/vaultx
 
 go 1.13
 
