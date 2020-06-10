@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/lancer-kit/noble.svg?branch=master)](https://travis-ci.org/rubenv/sql-migrate) 
+[![Build Status](https://travis-ci.com/lancer-kit/noble.svg?branch=master)](https://travis-ci.com/github/lancer-kit/noble) 
 [![GoDoc](https://godoc.org/github.com/lancer-kit/noble?status.png)](https://godoc.org/github.com/lancer-kit/noble)
 
 # noble.Secret 
