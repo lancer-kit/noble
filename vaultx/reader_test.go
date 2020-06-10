@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/lancer-kit/armory/api/httpx"
+
 	"github.com/lancer-kit/noble"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
@@ -30,6 +32,19 @@ type testConfig struct {
 	Secret noble.Secret `yaml:"secret"`
 }
 
+//go:generate curl http://127.0.0.1:1234/v1/sys/health
+func installedVault() bool {
+	resp, err := httpx.NewXClient().Get("http://127.0.0.1:1234/v1/sys/health")
+	if err != nil {
+		return false
+	}
+	if resp.StatusCode != 200 {
+		return false
+	}
+	_ = resp.Body.Close()
+	return true
+}
+
 func initStorage(t *testing.T) {
 	if vs != nil {
 		return
@@ -44,6 +59,10 @@ func initStorage(t *testing.T) {
 }
 
 func TestKeyReader_Read(t *testing.T) {
+	if !installedVault() {
+		println("no vault installed and run on port 1234")
+		return
+	}
 	initStorage(t)
 	r := KeyReader{}
 	v, e := r.Read("/data?test")
@@ -52,6 +71,11 @@ func TestKeyReader_Read(t *testing.T) {
 }
 
 func TestKeyReader_YAML(t *testing.T) {
+	if !installedVault() {
+		println("no vault installed and run on port 1234")
+		return
+	}
+
 	initStorage(t)
 	var c testConfig
 	e := yaml.Unmarshal([]byte(testYaml), &c)
@@ -63,6 +87,11 @@ func TestKeyReader_YAML(t *testing.T) {
 }
 
 func TestKeyReader_JSON(t *testing.T) {
+	if !installedVault() {
+		println("no vault installed and run on port 1234")
+		return
+	}
+
 	initStorage(t)
 	var c testConfig
 	e := json.Unmarshal([]byte(testJSON), &c)

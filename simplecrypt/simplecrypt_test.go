@@ -73,7 +73,7 @@ func TestUnmarshalYAML(t *testing.T) {
 func TestUnmarshalJSON(t *testing.T) {
 	var x testCfg
 	var r Reader
-	os.Setenv(EnvVarName, testKey)
+	_ = os.Setenv(EnvVarName, testKey)
 	r.SetKey(testKey)
 	noble.Register("scr", r.Clone())
 	e := json.Unmarshal([]byte(testJSON), &x)
