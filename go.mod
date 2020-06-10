@@ -10,7 +10,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/sirupsen/logrus v1.6.0
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.6.1
 	github.com/urfave/cli v1.22.4
 	golang.org/x/mod v0.3.0 // indirect
 	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e // indirect
