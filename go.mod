@@ -8,7 +8,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lancer-kit/armory v1.8.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.5.1
 	github.com/urfave/cli v1.22.4
