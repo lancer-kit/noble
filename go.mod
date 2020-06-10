@@ -11,7 +11,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.5.1
-	github.com/urfave/cli v1.22.2
+	github.com/urfave/cli v1.22.4
 	golang.org/x/mod v0.3.0 // indirect
 	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e // indirect
 	golang.org/x/tools v0.0.0-20200610052024-8d7dbee4c8ae // indirect
