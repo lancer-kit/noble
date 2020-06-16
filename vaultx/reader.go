@@ -1,4 +1,4 @@
-// Package nvault Noble vault reader
+// Package vaultx Noble vault reader
 package vaultx
 
 import (
