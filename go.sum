@@ -28,6 +28,7 @@ github.com/getsentry/sentry-go v0.1.1 h1:5jcHHCJ+EUK+X8aoDbJUzZU1kG4ZFk2xX15BKv2
 github.com/getsentry/sentry-go v0.1.1/go.mod h1:2QfSdvxz4IZGyB5izm1TtADFhlhfj1Dcesrg8+A/T9Y=
 github.com/go-chi/chi v4.0.2+incompatible h1:maB6vn6FqCxrpz4FqWdh4+lwpyZIQS7YEAUcHlgXVRs=
 github.com/go-chi/chi v4.0.2+incompatible/go.mod h1:eB3wogJHnLi3x/kFX2A+IbTBlXxmMeXJVKy9tTv1XzQ=
+github.com/go-chi/chi v4.1.2+incompatible/go.mod h1:eB3wogJHnLi3x/kFX2A+IbTBlXxmMeXJVKy9tTv1XzQ=
 github.com/go-errors/errors v1.0.1 h1:LUHzmkK3GUKUrL/1gfBUxAHzcev3apQlezX/+O7ma6w=
 github.com/go-errors/errors v1.0.1/go.mod h1:f4zRHt4oKfwPJE5k8C9vpYG+aDHdBFUsgrm6/TyX73Q=
 github.com/go-ldap/ldap v3.0.2+incompatible/go.mod h1:qfd9rJvER9Q0/D/Sqn1DfHRoBp40uXYvFoEVrNEPqRc=
@@ -103,6 +104,8 @@ github.com/lancer-kit/armory v1.7.1 h1:SbzInubcjB70lGYiWhg2Ltb5aoS3ckESfPXydXqx9
 github.com/lancer-kit/armory v1.7.1/go.mod h1:Ze0mfDJO4/TWXHAIaelxNJ1bcdBdyH22HRZFyeXb0k0=
 github.com/lancer-kit/armory v1.8.0 h1:Wz2OPRSw+LiG+bTaaBuB+iu0AdxHhMtlRVT0XZhTGhI=
 github.com/lancer-kit/armory v1.8.0/go.mod h1:EqBzTaxYXJZlyorlxXMiVGTG90M+XtCpmK9KYafW34s=
+github.com/lancer-kit/armory v1.8.1 h1:CKPXLTME5hRlFSp4ZIYBBqkr4a6+EaDVZ1QwCUF3rhc=
+github.com/lancer-kit/armory v1.8.1/go.mod h1:dagY68FkI6z5zYcHq99WKaqDXgZGS9WY8mtVUg5GDBo=
 github.com/lann/builder v0.0.0-20180802200727-47ae307949d0/go.mod h1:dXGbAdH5GtBTC4WfIxhKZfyBF/HBFgRZSWwZ9g/He9o=
 github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0/go.mod h1:vmVJ0l/dxyfGW6FmdpVm2joNMFikkuWg0EoCKLGUMNw=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
