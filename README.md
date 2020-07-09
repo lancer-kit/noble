@@ -1,6 +1,18 @@
 [![Build Status](https://travis-ci.com/lancer-kit/noble.svg?branch=master)](https://travis-ci.com/github/lancer-kit/noble) 
 [![GoDoc](https://godoc.org/github.com/lancer-kit/noble?status.png)](https://godoc.org/github.com/lancer-kit/noble)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lancer-kit/noble)](https://goreportcard.com/report/github.com/lancer-kit/noble)
+
+# Noble. Config files secret storage.
+
+No more secrets in github/gitlab repo's
+
+>TOC
+* [Basic functionality](#noblesecret)
+* [Extension "simplecrypt".Just crypted strings in your config](#extension-simplecrypt)
+* [Extension "etcdr2".Read from **etcd** key/value API v2, ](#etcdr2)
+* [Extention "files".](#files)
+* [Extention "vaultx". Read stored keys from Hashicorp Vault](#vault)
+
 # noble.Secret 
 -----------
 
@@ -120,7 +132,7 @@ import _ "github.com/lancer-kit/noble/simplecrypt"
 //....
 ````
 
-
+### ETCDR2
 ### Extension for etcd key/value API v2, "etcdr2"
 
 Add type extension:
@@ -151,6 +163,7 @@ package main
 import _ "github.com/lancer-kit/noble/etcdr2"
 //....
 ````
+### Files
 ### Extension "files"
 
 Add type extension:
@@ -172,7 +185,7 @@ package main
 import _ "github.com/lancer-kit/noble/files"
 //....
 ````
-
+### Vault
 ### Extension "vaultx"
 
 Add type extension:
