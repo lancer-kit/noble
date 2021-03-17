@@ -49,7 +49,7 @@ func genKey() string {
 	_, tmp := crypto.GenKeyPair()
 	key := []byte(tmp[:32])
 	println("Key len:", len(key))
-	return base64.RawStdEncoding.EncodeToString([]byte(key))
+	return base64.RawStdEncoding.EncodeToString(key)
 }
 
 func encryptValue(c *cli.Context) error {

@@ -7,7 +7,10 @@ package vaultx
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"testing"
+
+	"github.com/sirupsen/logrus"
 
 	"github.com/lancer-kit/armory/api/httpx"
 
@@ -105,4 +108,127 @@ func TestKeyReader_JSON(t *testing.T) {
 func TestSetSecretPath(t *testing.T) {
 	SetSecretPath("/some/vault/data/")
 	assert.Equal(t, "/some/vault/data", defaultConfig.SecretPath)
+}
+
+func TestInitVault(t *testing.T) {
+	if !installedVault() {
+		assert.Error(t, InitVault(nil))
+	} else {
+		assert.NoError(t, InitVault(nil))
+	}
+}
+
+func TestKeyReader_Clone(t *testing.T) {
+	m := &KeyReader{}
+	r := m.Clone()
+	assert.EqualValues(t, m, r)
+}
+
+func TestKeyReader_Read1(t *testing.T) {
+	type args struct {
+		key string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		mock    storage
+		want    string
+		wantErr bool
+	}{
+		{
+			name:    "error",
+			args:    args{key: "/some?key"},
+			mock:    nil,
+			want:    "",
+			wantErr: true,
+		},
+		{
+			name: "no error",
+			args: args{key: "/some?key"},
+			mock: &storageMock{
+				data: "return",
+				err:  nil,
+			},
+			want:    "return",
+			wantErr: false,
+		},
+		{
+			name: "error key",
+			args: args{key: "some"},
+			mock: &storageMock{
+				err: nil,
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := &KeyReader{}
+			vs = tt.mock
+			got, err := r.Read(tt.args.key)
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			} else {
+				assert.NoError(t, err)
+			}
+			if got != tt.want {
+				t.Errorf("Read() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestSetLogger(t *testing.T) {
+	vs = nil
+	assert.False(t, SetLogger(logrus.WithField("unit", "test")))
+	vs = &storageMock{}
+	assert.True(t, SetLogger(logrus.WithField("unit", "test")))
+}
+
+func TestSetSecretPath1(t *testing.T) {
+	const n = "/secret/data/some-set"
+	SetSecretPath(n)
+	assert.Equal(t, n, defaultConfig.SecretPath)
+}
+
+func TestSetServerAddress(t *testing.T) {
+	const n = "localhost:1000"
+	SetServerAddress(n)
+	assert.Equal(t, n, defaultConfig.ServerAddress)
+}
+
+func TestSetToken(t *testing.T) {
+	const n = "token"
+	SetToken(n)
+	assert.Equal(t, n, defaultConfig.Token)
+}
+
+func TestSetTokenEnv(t *testing.T) {
+	const n = "SOME_NOT_EXISTING"
+	assert.False(t, SetTokenEnv(n))
+	assert.NoError(t, os.Setenv(n, n))
+	assert.True(t, SetTokenEnv(n))
+	assert.Equal(t, n, defaultConfig.Token)
+	assert.NoError(t, os.Unsetenv(n))
+}
+
+func TestSetTokenTTL(t *testing.T) {
+	const n int64 = 2
+	SetTokenTTL(n)
+	assert.Equal(t, n, defaultConfig.TokenTTLHours)
+}
+
+type storageMock struct {
+	data string
+	err  error
+	log  *logrus.Entry
+}
+
+func (s *storageMock) Get(_, _ string) (string, error) {
+	return s.data, s.err
+}
+
+func (s *storageMock) SetLogger(entry *logrus.Entry) {
+	s.log = entry
 }
