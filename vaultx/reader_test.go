@@ -54,7 +54,7 @@ func initStorage(t *testing.T) {
 	}
 	SetServerAddress("http://127.0.0.1:1234")
 	if !SetTokenEnv("VAULT_TOKEN") {
-		SetToken("myroot") //YOUR TOKEN HERE
+		SetToken("myroot") // YOUR TOKEN HERE
 	}
 	err := InitVault(nil)
 	assert.NoError(t, err)

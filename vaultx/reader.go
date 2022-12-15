@@ -57,7 +57,7 @@ func SetTokenEnv(envName string) bool {
 	return ok
 }
 
-//SetTokenTTL token time to live in hours
+// SetTokenTTL token time to live in hours
 func SetTokenTTL(ttl int64) {
 	defaultConfig.TokenTTLHours = ttl
 }
@@ -70,9 +70,8 @@ func init() {
 	noble.Register("vault", &KeyReader{})
 }
 
-//KeyReader type implements noble.SecretStorage
+// KeyReader type implements noble.SecretStorage
 type KeyReader struct {
-	//key string
 }
 
 func (r *KeyReader) Read(key string) (string, error) {

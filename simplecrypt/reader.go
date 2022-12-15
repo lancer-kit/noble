@@ -12,7 +12,7 @@ import (
 	"github.com/lancer-kit/noble"
 )
 
-//EnvVarName default password variable name
+// EnvVarName default password variable name
 const EnvVarName = "SCR_PASS"
 
 //nolint:gochecknoglobals

@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-//EtcdConnectionString default connection string
+// EtcdConnectionString default connection string
 var EtcdConnectionString = "http://127.0.0.1:2379" //nolint:gochecknoglobals
 
 //nolint:gochecknoinits
@@ -14,9 +14,8 @@ func init() {
 	noble.Register("etcd2", &KeyReader{})
 }
 
-//KeyReader type implements noble.SecretStorage
+// KeyReader type implements noble.SecretStorage
 type KeyReader struct {
-	//key string
 }
 
 type v2Message struct {

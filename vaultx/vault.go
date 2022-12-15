@@ -22,9 +22,9 @@ const (
 )
 
 type (
-	//VaultCfg vault config
+	// VaultCfg vault config
 	VaultCfg struct {
-		ServerAddress string //vault server address
+		ServerAddress string // vault server address
 		SecretPath    string
 		// Timeout and Refresh Timestamp in hours
 		TokenTTLHours         int64
@@ -92,7 +92,7 @@ func (v *vaultStorage) Get(path, key string) (string, error) {
 		return "", nil
 	}
 
-	//convert interface to string
+	// convert interface to string
 	res := ""
 	switch typedValue := value.(type) {
 	case string:
@@ -123,7 +123,7 @@ func newStorage(cfg VaultCfg) (storage, error) {
 
 	client.SetToken(token)
 
-	//check connection
+	// check connection
 	_, err = client.Sys().Health()
 	if err != nil {
 		return nil, err
